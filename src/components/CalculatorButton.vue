@@ -1,7 +1,8 @@
 <template>
   <div
     class="calculator__button"
-    v-bind:class="{ 'calculator__button--secondary': color === 'secondary' }"
+    :class="{ 'calculator__button--secondary': color === 'secondary', 'calculator__button--small': size === 'small', 'calculator__button--clear': displayText === 'CLEAR' }"
+    @click="buttonPress(displayText)"
   >{{displayText}}</div>
 </template>
 
@@ -15,9 +16,15 @@ export default {
     },
     color: {
       type: String,
-      default: "primary",
+      default: "",
       description: "Button color"
-    }
+    },
+    size: {
+      type: String,
+      default: "",
+      description: "Font size"
+    },
+    buttonPress: Function
   }
 };
 </script>
@@ -27,14 +34,22 @@ export default {
 .calculator__button {
   text-align: center;
   background-color: #def3f4;
-  font-size: 38px;
+  font-size: 30px;
   padding: 10px 20px;
   border-radius: 100px;
   margin: 10px;
   cursor: pointer;
-  /* flex-grow: 1; */
+  width: 20px;
+  /* height: 50px; */
 }
 .calculator__button--secondary {
-  background-color: #FFF6DB;
+  background-color: #fff6db;
+}
+.calculator__button--small {
+  font-size: 20px;
+  line-height: 30px;
+}
+.calculator__button--clear {
+  flex-grow: 3;
 }
 </style>

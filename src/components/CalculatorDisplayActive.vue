@@ -1,14 +1,20 @@
 <template>
   <div class="calculator__display--active">
     <div>=</div>
-    <div>5</div>
+    <div>{{displayDigit}}</div>
   </div>
 </template>
 
 <script>
 export default {
   name: "CalculatorDisplayActive",
-  props: {}
+  props: {
+    displayDigit: {
+      type: String,
+      default: 0,
+      description: "Display number"
+    }
+  }
 };
 </script>
 
