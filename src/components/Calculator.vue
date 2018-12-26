@@ -91,6 +91,7 @@ export default {
           } else if (value === "=") {
             // Show Result
             this.calculate();
+            this.result = 0;
           } else if (operators.includes(value)) {
             this.calculate();
             this.prevOperator = value;
