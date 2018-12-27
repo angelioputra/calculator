@@ -1,13 +1,15 @@
 <template>
-  <div class="calculator__display--history">
-      5
-  </div>
+  <div class="calculator__display--history">{{ history }}</div>
 </template>
 
 <script>
 export default {
   name: "CalculatorDisplayHistory",
-  props: {}
+  computed: {
+    history() {
+      return this.$store.getters.history;
+    }
+  }
 };
 </script>
 

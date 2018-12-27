@@ -68,7 +68,7 @@ export default {
       if (displayDigit === "0") {
         displayDigit = "";
       }
-      if (!isNaN(value) || value === '.') {
+      if (!isNaN(value) || value === ".") {
         // If number
         if (this.clearNext) {
           this.displayDigit = value;
@@ -84,15 +84,18 @@ export default {
           const operators = ["+", "-", "x", "/"];
           // Reset Digit
           if (value === "CLEAR") {
+            // Reset Result
+            this.$store.dispatch("clearHistory", value);
             this.result = 0;
             this.displayDigit = "0";
             this.prevOperator = "";
-            // Reset Result
           } else if (value === "=") {
             // Show Result
+            this.$store.dispatch("addHistory", value);
             this.calculate();
             this.result = 0;
           } else if (operators.includes(value)) {
+            this.$store.dispatch("addHistory", value);
             this.calculate();
             this.prevOperator = value;
           }
@@ -117,6 +120,7 @@ export default {
         default:
           this.result = currentNumber;
       }
+      this.$store.dispatch("addHistory", this.displayDigit);
       this.displayDigit = "" + this.result;
     }
   },
