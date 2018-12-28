@@ -1,10 +1,19 @@
 <template>
-  <div class="calculator__display--history">{{ history }}</div>
+  <div id="calculator__display" class="calculator__display--history">
+    <div v-for="(item, index) in histories" :key="index">{{item}}</div>
+    <div>{{ history }}</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: "CalculatorDisplayHistory",
+  props: {
+    histories: {
+      type: Array,
+      description: "Calculate history"
+    }
+  },
   computed: {
     history() {
       return this.$store.getters.history;
@@ -13,10 +22,5 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.calculator__display--history {
-  text-align: right;
-  min-height: 10vh;
-}
 </style>

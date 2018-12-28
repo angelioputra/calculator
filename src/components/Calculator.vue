@@ -1,6 +1,6 @@
 <template>
   <div class="calculator">
-    <calculator-display-history></calculator-display-history>
+    <calculator-display-history :histories="histories"></calculator-display-history>
     <calculator-display-active :displayDigit="displayDigit"></calculator-display-active>
     <div class="horizontal-line"></div>
     <div class="calculator__button__container">
@@ -58,11 +58,16 @@ export default {
       displayDigit: "0",
       result: 0,
       clearNext: false, // Flag to flush Display Digit
-      prevOperator: ""
+      prevOperator: "",
+      histories: []
     };
   },
   methods: {
     buttonPress(value) {
+      // Scroll to Bottom
+      const objDiv = document.getElementById("calculator__display");
+      objDiv.scrollTop = objDiv.scrollHeight;
+      
       // console.log(value);
       let displayDigit = this.displayDigit;
       if (displayDigit === "0") {
@@ -91,13 +96,16 @@ export default {
             this.prevOperator = "";
           } else if (value === "=") {
             // Show Result
-            this.$store.dispatch("addHistory", value);
             this.calculate();
             this.result = 0;
-          } else if (operators.includes(value)) {
             this.$store.dispatch("addHistory", value);
+            this.$store.dispatch("addHistory", this.displayDigit);
+            this.saveLocalStorage();
+            this.loadLocalStorage();
+          } else if (operators.includes(value)) {
             this.calculate();
             this.prevOperator = value;
+            this.$store.dispatch("addHistory", value);
           }
         }
       }
@@ -122,7 +130,27 @@ export default {
       }
       this.$store.dispatch("addHistory", this.displayDigit);
       this.displayDigit = "" + this.result;
+    },
+    loadLocalStorage() {
+      this.histories = JSON.parse(localStorage.getItem("history"));
+    },
+    saveLocalStorage() {
+      let histories = [];
+      const histories_temp = JSON.parse(localStorage.getItem("history"));
+      if (histories_temp) {
+        histories = histories_temp;
+      }
+      histories.push(this.history);
+      localStorage.setItem("history", JSON.stringify(histories));
     }
+  },
+  computed: {
+    history() {
+      return this.$store.getters.history;
+    }
+  },
+  beforeMount() {
+    this.loadLocalStorage();
   },
   components: {
     CalculatorDisplayHistory,
@@ -132,23 +160,5 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.calculator {
-  margin: auto;
-  max-width: 300px;
-  min-height: 400px;
-  border: 1px solid aquamarine;
-  padding: 20px;
-}
-.horizontal-line {
-  border: 1px solid gray;
-}
-.calculator__button__container {
-  margin: 0px -10px;
-}
-.calculator__button__container__row {
-  display: flex;
-  justify-content: space-between;
-}
+<style>
 </style>

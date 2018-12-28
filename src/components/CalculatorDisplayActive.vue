@@ -18,13 +18,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.calculator__display--active {
-  text-align: right;
-  font-size: 44px;
-  display: flex;
-  justify-content: space-between;
-  padding: 18px 0;
-}
+
 </style>
